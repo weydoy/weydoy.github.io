@@ -1,299 +1,256 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Young Mi's Quarter of a Century</title>
+<meta charset="UTF-8">
+<title>Amy 25</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
 
 <style>
-body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    margin: 0;
-    background: linear-gradient(to bottom, #dff6ff, #f4fff4);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    overflow: hidden;
+body{
+    margin:0;
+    overflow:hidden;
+    background:black;
+    color:white;
+    font-family:sans-serif;
+    text-align:center;
 }
 
-h1 { margin-bottom: 10px; }
-
-#countdown {
-    font-size: 36px;
-    margin-bottom: 20px;
+/* COUNTDOWN */
+#countdown{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    font-size:40px;
 }
 
-#hiddenContent {
-    display: none;
-    font-size: 26px;
-    color: #2e7d32;
-    margin-top: 20px;
+/* FIREWORK CANVAS */
+canvas{
+    position:fixed;
+    top:0;
+    left:0;
 }
 
-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    pointer-events: none;
+/* FINAL LETTER SCREEN */
+#finalScreen{
+    position:fixed;
+    inset:0;
+    background:linear-gradient(to bottom,#fff0f6,#e0f7fa);
+
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+
+    padding:80px 40px;
+
+    font-family:'Special Elite', monospace;
+    font-size:18px;
+    line-height:1.9;
+    letter-spacing:0.5px;
+    color:#222;
+
+    overflow-y:auto;
+
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 2s ease;
+    z-index:10;
 }
 
-/* Frog + Mouse positioning */
-.frog-container { position: fixed; bottom: 0; left: 20px; }
-.mouse-container { position: fixed; bottom: 0; right: 20px; }
-
-/* Balloon float */
-@keyframes float {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-12px); }
-    100% { transform: translateY(0px); }
-}
-.balloon { animation: float 3s ease-in-out infinite; }
-
-/* Mouse nibble */
-@keyframes nibble {
-    0%,100% { transform: rotate(0deg); }
-    50% { transform: rotate(-5deg); }
-}
-.mouse-head {
-    transform-origin: 60% 60%;
-    animation: nibble 1.5s infinite ease-in-out;
+#typewriter{
+    max-width:720px;
+    margin:0 auto;
 }
 
-/* Frog jump */
-@keyframes frogJump {
-    0%   { transform: translateY(0); }
-    30%  { transform: translateY(-120px); }
-    50%  { transform: translateY(-150px); }
-    70%  { transform: translateY(-120px); }
-    100% { transform: translateY(0); }
-}
-.frog-jump { animation: frogJump 1s ease-out; }
-
-/* Frog blink using eyelids */
-@keyframes eyelidBlink {
-    0%, 90%, 100% { height: 0; }
-    95% { height: 20px; }
-}
-.eyelid {
-    animation: eyelidBlink 4s infinite;
+/* FROG */
+#frog{
+    position:fixed;
+    bottom:30px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:50px;
+    opacity:0;
+    transition:opacity 2s ease;
 }
 
-/* Final screen */
-#finalScreen {
-    position: fixed;
-    inset: 0;
-    background: linear-gradient(to bottom, #fff0f6, #e0f7fa);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 40px;
-    font-size: 20px;
-    line-height: 1.6;
-    max-width: 900px;
-    margin: auto;
-    text-align: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 2s ease;
-    z-index: 10;
+/* MOUSE */
+#mouse{
+    position:fixed;
+    bottom:30px;
+    right:40px;
+    font-size:40px;
 }
 
-/* Typewriter cursor */
-#typewriter::after {
-    content: "|";
-    animation: blinkCursor 1s infinite;
+.tail{
+    position:absolute;
+    width:30px;
+    height:30px;
+    border:4px solid pink;
+    border-left:none;
+    border-top:none;
+    border-radius:50%;
+    bottom:10px;
+    right:-20px;
+    transform:rotate(45deg);
 }
 
-@keyframes blinkCursor {
-    0%,50%,100% { opacity: 1; }
-    25%,75% { opacity: 0; }
+/* Frog Jump */
+@keyframes jump{
+    0%{transform:translateX(-50%) translateY(0);}
+    50%{transform:translateX(-50%) translateY(-40px);}
+    100%{transform:translateX(-50%) translateY(0);}
+}
+
+/* Frog Blink */
+@keyframes blink{
+    0%,95%,100%{opacity:1;}
+    97%{opacity:0;}
 }
 </style>
 </head>
 
 <body>
 
-<h1>Young Mi's Quarter of a Century</h1>
 <div id="countdown"></div>
-<div id="hiddenContent">🎉 It's 2AM AEST on March 2! Surprise unlocked! 🎆</div>
 
 <canvas id="fireworks"></canvas>
 
-<!-- Frog -->
-<div class="frog-container">
-<svg width="220" height="300" viewBox="0 0 220 300">
-
-<g class="balloon">
-<line x1="150" y1="60" x2="150" y2="160" stroke="#555" stroke-width="2"/>
-<ellipse cx="150" cy="40" rx="35" ry="45" fill="#ff6b81"/>
-<polygon points="145,85 155,85 150,95" fill="#ff6b81"/>
-</g>
-
-<ellipse cx="110" cy="200" rx="70" ry="60" fill="#66bb6a"/>
-<ellipse cx="110" cy="215" rx="40" ry="35" fill="#a5d6a7"/>
-<circle cx="80" cy="130" r="20" fill="#66bb6a"/>
-<circle cx="140" cy="130" r="20" fill="#66bb6a"/>
-
-<!-- Left Eye -->
-<g>
-<circle cx="80" cy="130" r="10" fill="white"/>
-<circle cx="80" cy="130" r="5" fill="black"/>
-<rect class="eyelid" x="70" y="120" width="20" height="0" fill="#66bb6a"/>
-</g>
-
-<!-- Right Eye -->
-<g>
-<circle cx="140" cy="130" r="10" fill="white"/>
-<circle cx="140" cy="130" r="5" fill="black"/>
-<rect class="eyelid" x="130" y="120" width="20" height="0" fill="#66bb6a"/>
-</g>
-
-<path d="M75 165 Q110 190 145 165"
-stroke="#2e7d32"
-stroke-width="4"
-fill="transparent"/>
-
-</svg>
-</div>
-
-<!-- Mouse -->
-<div class="mouse-container">
-<svg width="220" height="200" viewBox="0 0 220 200">
-
-<!-- Cheese -->
-<polygon points="120,140 190,120 190,170 120,170" fill="#ffd54f"/>
-
-<!-- Body -->
-<ellipse cx="80" cy="150" rx="50" ry="35" fill="#b0bec5"/>
-
-<!-- Tail -->
-<path d="M30 155 Q0 130 25 110 Q50 90 20 70"
-stroke="#90a4ae"
-stroke-width="4"
-fill="transparent"
-stroke-linecap="round"/>
-
-<!-- Head -->
-<g class="mouse-head">
-<ellipse cx="110" cy="140" rx="30" ry="25" fill="#b0bec5"/>
-<circle cx="120" cy="135" r="4" fill="black"/>
-<circle cx="95" cy="120" r="12" fill="#cfd8dc"/>
-<circle cx="115" cy="120" r="12" fill="#cfd8dc"/>
-</g>
-
-</svg>
-</div>
-
 <div id="finalScreen">
-<h1 id="typewriter"></h1>
+    <div id="typewriter"></div>
+</div>
+
+<div id="frog">🐸</div>
+
+<div id="mouse">
+    🐭
+    <div class="tail"></div>
 </div>
 
 <script>
-const targetDate = new Date().getTime() +5000;
+
+/* 5 SECOND PREVIEW TIMER */
+const targetDate = new Date().getTime() + 5000;
 const countdownElement = document.getElementById("countdown");
-const hiddenContent = document.getElementById("hiddenContent");
 
-const timer = setInterval(function() {
-const now = new Date().getTime();
-const distance = targetDate - now;
+const interval = setInterval(()=>{
+    const now = new Date().getTime();
+    const distance = targetDate - now;
 
-if(distance <= 0){
-clearInterval(timer);
-countdownElement.style.display="none";
-hiddenContent.style.display="block";
-startFireworks();
+    const seconds = Math.floor((distance % (1000*60)) / 1000);
+    countdownElement.innerHTML = seconds + "s";
 
-setTimeout(()=>{
-document.getElementById("finalScreen").style.opacity="1";
-document.getElementById("finalScreen").style.pointerEvents="auto";
-startTypewriter();
-makeFrogJump();
-},6000);
+    if(distance <= 0){
+        clearInterval(interval);
+        countdownElement.style.display="none";
+        startFireworks();
 
-return;
-}
-
-const days=Math.floor(distance/(1000*60*60*24));
-const hours=Math.floor((distance%(1000*60*60*24))/(1000*60*60));
-const minutes=Math.floor((distance%(1000*60*60))/(1000*60));
-const seconds=Math.floor((distance%(1000*60))/1000);
-
-countdownElement.innerHTML=
-days+"d "+hours+"h "+minutes+"m "+seconds+"s ";
+        setTimeout(()=>{
+            document.getElementById("finalScreen").style.opacity="1";
+            document.getElementById("finalScreen").style.pointerEvents="auto";
+            document.getElementById("frog").style.opacity="1";
+            startTypewriter();
+            makeFrogJump();
+            makeFrogBlink();
+        },6000);
+    }
 },1000);
 
-function makeFrogJump(){
-const frog=document.querySelector(".frog-container");
-frog.classList.add("frog-jump");
-setTimeout(()=>frog.classList.remove("frog-jump"),1000);
-}
 
-function startTypewriter(){
-const message=`Happy birthday to my precious angel, my warm sun in the cold bleak winter days.
+/* FIREWORKS */
+const canvas = document.getElementById("fireworks");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-You're 25! According to some ;_; that makes you a part of the official mid 20's gang...
+let particles = [];
 
-Cakes and Candles Amy x  
-Don't party too hard.
-
-Yours,  
-Weylin`;
-
-const element=document.getElementById("typewriter");
-let index=0;
-
-function type(){
-if(index<message.length){
-const char=message.charAt(index);
-element.innerHTML+= char==="\n"?"<br><br>":char;
-index++;
-
-let delay=35;
-if(message.substring(index-13,index).includes("Yours,")){delay=120;}
-if(message.substring(index-7,index).includes("Weylin")){delay=200;}
-
-setTimeout(type,delay);
-}}
-type();
+function createFirework(){
+    for(let i=0;i<100;i++){
+        particles.push({
+            x:canvas.width/2,
+            y:canvas.height/2,
+            vx:(Math.random()-0.5)*8,
+            vy:(Math.random()-0.5)*8,
+            alpha:1
+        });
+    }
 }
 
 function startFireworks(){
-const canvas=document.getElementById("fireworks");
-const ctx=canvas.getContext("2d");
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
-let particles=[];
-
-function createFirework(){
-const x=Math.random()*canvas.width;
-const y=Math.random()*canvas.height/2;
-const color=`hsl(${Math.random()*360},100%,50%)`;
-for(let i=0;i<80;i++){
-particles.push({x,y,
-angle:Math.random()*2*Math.PI,
-speed:Math.random()*5+2,
-life:100,color});
-}}
-
-function update(){
-ctx.fillStyle="rgba(0,0,0,0.15)";
-ctx.fillRect(0,0,canvas.width,canvas.height);
-particles.forEach((p,i)=>{
-p.x+=Math.cos(p.angle)*p.speed;
-p.y+=Math.sin(p.angle)*p.speed;
-p.life--;
-ctx.beginPath();
-ctx.arc(p.x,p.y,2,0,Math.PI*2);
-ctx.fillStyle=p.color;
-ctx.fill();
-if(p.life<=0)particles.splice(i,1);
-});
-requestAnimationFrame(update);
+    createFirework();
+    animateFireworks();
 }
 
-setInterval(createFirework,700);
-update();
+function animateFireworks(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p=>{
+        p.x+=p.vx;
+        p.y+=p.vy;
+        p.alpha-=0.01;
+
+        ctx.globalAlpha=p.alpha;
+        ctx.fillStyle="white";
+        ctx.fillRect(p.x,p.y,2,2);
+    });
+    requestAnimationFrame(animateFireworks);
 }
+
+
+/* TYPEWRITER */
+function startTypewriter(){
+
+const message = `Happy birthday to my precious angel, my warm sun in the cold bleak winter days.
+
+You're 25! according to some ;_; that makes you apart of the official mid 20's gang. I hope when this counter ticked to 0 you were surrounded by your friends, maybe a million beers deep and getting smothered with love.
+
+The next 24 hours is all about you! don't be scared (you wont) to remind everyone you get a free pass for the day, and you may ragebait or witch to your hearts desires without any repercussions.
+
+25 short years you've lived on this rock, but god you have lived it. The experiences you have triumphed over, and connections you continue to make, has shaped you into the 25 year old woman staring back at you in the mirror. that woman is a continuous source of inspiration to me. She is strong, she is compassionate, she is sincere, she is patient, she is generous.
+
+Unfortunately I wont be here with you today, nor have I been there for the last 24 birthdays gone by. If I was, you may not be that woman whom i am most proud of.. But, if you'll let me, I'd very much enjoy spending the next 25 birthdays with you in my arms. because at the moment, I wake in the night and immediately reach for my phone, but I would really love to wake to the sound of Japanese tv and the warmth of a heavy head on my chest.
+
+Cakes and Candles Amy x
+Don't party too hard.
+
+Yours,
+Weylin`;
+
+const element = document.getElementById("typewriter");
+let index=0;
+
+function type(){
+    if(index<message.length){
+        const char=message.charAt(index);
+        element.innerHTML+=char==="\n"?"<br><br>":char;
+        index++;
+
+        let delay=55;
+
+        if(char==="." ) delay=250;
+
+        if(message.substring(index-7,index).includes("Weylin")){
+            delay=300;
+        }
+
+        setTimeout(type,delay);
+    }
+}
+type();
+}
+
+
+/* FROG ANIMATION */
+function makeFrogJump(){
+    const frog=document.getElementById("frog");
+    frog.style.animation="jump 1s ease infinite";
+}
+
+function makeFrogBlink(){
+    const frog=document.getElementById("frog");
+    frog.style.animation += ", blink 4s infinite";
+}
+
 </script>
 
 </body>
