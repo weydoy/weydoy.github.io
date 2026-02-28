@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Young Mi's Quarter of a Century</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
+
+<style>
+body{
+    margin:0;
+    overflow:hidden;
+    background:#0d0d1a;
+    color:white;
+    font-family:sans-serif;
+    text-align:center;
+}
+
+/* TITLE */
+#title{
+    position:absolute;
+    top:60px;
+    width:100%;
+    font-size:32px;
+    font-weight:bold;
+    letter-spacing:2px;
+}
+
+/* COUNTDOWN */
+#countdown{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    font-size:48px;
+}
+
+/* Frog */
+#frog{
+    position:fixed;
+    bottom:20px;
+    left:20px;
+    font-size:60px;
+    animation:blink 4s infinite;
+}
+
+/* Balloon */
+#balloon{
+    position:fixed;
+    bottom:95px;
+    left:45px;
+    font-size:50px;
+    animation:float 3s ease-in-out infinite;
+}
+
+@keyframes float{
+    0%{transform:translateY(0);}
+    50%{transform:translateY(-15px);}
+    100%{transform:translateY(0);}
+}
+
+/* Mouse + Cheese */
+#cheese{
+    position:fixed;
+    bottom:20px;
+    right:90px;
+    font-size:40px;
+}
+
+#mouse{
+    position:fixed;
+    bottom:20px;
+    right:40px;
+    font-size:45px;
+}
+
+.tail{
+    position:absolute;
+    width:30px;
+    height:30px;
+    border:4px solid grey;
+    border-left:none;
+    border-top:none;
+    border-radius:50%;
+    bottom:10px;
+    right:-20px;
+    transform:rotate(45deg);
+}
+
+/* Blink */
+@keyframes blink{
+    0%,95%,100%{opacity:1;}
+    97%{opacity:0;}
+}
+
+/* Fireworks */
+canvas{
+    position:fixed;
+    top:0;
+    left:0;
+}
+
+/* FINAL LETTER SCREEN */
+#finalScreen{
+    position:fixed;
+    inset:0;
+    background:linear-gradient(to bottom,#fff0f6,#e0f7fa);
+
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+
+    padding:80px 40px;
+
+    font-family:'Special Elite', monospace;
+    font-size:18px;
+    line-height:1.9;
+    letter-spacing:0.5px;
+    color:#222;
+
+    overflow-y:auto;
+
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 2s ease;
+    z-index:10;
+}
+
+#letter{
+    max-width:720px;
+    margin:0 auto;
+}
+</style>
+</head>
+
+<body>
+
+<div id="title">Young Mi's Quarter of a Century</div>
+
+<div id="countdown"></div>
+
+<div id="frog">🐸</div>
+<div id="balloon">🎈</div>
+
+<div id="cheese">🧀</div>
+<div id="mouse">
+    🐭
+    <div class="tail"></div>
+</div>
+
+<canvas id="fireworks"></canvas>
+
+<div id="finalScreen">
+    <div id="letter">
+        Happy birthday to my precious angel, my warm sun in the cold bleak winter days.<br><br>
+
+        You're 25! according to some ;_; that makes you apart of the official mid 20's gang. I hope when this counter ticked to 0 you were surrounded by your friends, maybe a million beers deep and getting smothered with love.<br><br>
+
+        The next 24 hours is all about you! don't be scared (you wont) to remind everyone you get a free pass for the day, and you may ragebait or witch to your hearts desires without any repercussions.<br><br>
+
+        25 short years you've lived on this rock, but god you have lived it. The experiences you have triumphed over, and connections you continue to make, has shaped you into the 25 year old woman staring back at you in the mirror. that woman is a continuous source of inspiration to me. She is strong, she is compassionate, she is sincere, she is patient, she is generous.<br><br>
+
+        Unfortunately I wont be here with you today, nor have I been there for the last 24 birthdays gone by. If I was, you may not be that woman whom i am most proud of.. But, if you'll let me, I'd very much enjoy spending the next 25 birthdays with you in my arms. because at the moment, I wake in the night and immediately reach for my phone, but I would really love to wake to the sound of Japanese tv and the warmth of a heavy head on my chest.<br><br>
+
+        Cakes and Candles Amy x<br>
+        Don't party too hard.<br><br>
+
+        Yours,<br>
+        Weylin
+    </div>
+</div>
+
+<script>
+
+/* Countdown to 2:00 AM AEST (UTC+10) on March 2, 2026 */
+/* 2:00 AM AEST = 16:00 UTC on March 1 */
+const targetDate = new Date(Date.UTC(2026, 2, 1, 16, 0, 0)).getTime();
+const countdownElement = document.getElementById("countdown");
+
+const interval = setInterval(()=>{
+    const now = new Date().getTime();
+    const distance = targetDate - now;
+
+    const days = Math.floor(distance/(1000*60*60*24));
+    const hours = Math.floor((distance%(1000*60*60*24))/(1000*60*60));
+    const minutes = Math.floor((distance%(1000*60*60))/(1000*60));
+    const seconds = Math.floor((distance%(1000*60))/1000);
+
+    countdownElement.innerHTML =
+        days+"d "+hours+"h "+minutes+"m "+seconds+"s";
+
+    if(distance <= 0){
+        clearInterval(interval);
+        document.getElementById("title").style.display="none";
+        countdownElement.style.display="none";
+        document.getElementById("frog").style.display="none";
+        document.getElementById("balloon").style.display="none";
+        document.getElementById("mouse").style.display="none";
+        document.getElementById("cheese").style.display="none";
+
+        startFireworks();
+
+        setTimeout(()=>{
+            document.getElementById("finalScreen").style.opacity="1";
+            document.getElementById("finalScreen").style.pointerEvents="auto";
+        },6000);
+    }
+},1000);
+
+
+/* FIREWORKS */
+const canvas = document.getElementById("fireworks");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+
+function createFirework(){
+    for(let i=0;i<120;i++){
+        particles.push({
+            x:canvas.width/2,
+            y:canvas.height/2,
+            vx:(Math.random()-0.5)*10,
+            vy:(Math.random()-0.5)*10,
+            alpha:1
+        });
+    }
+}
+
+function startFireworks(){
+    createFirework();
+    animateFireworks();
+}
+
+function animateFireworks(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p=>{
+        p.x+=p.vx;
+        p.y+=p.vy;
+        p.alpha-=0.01;
+        ctx.globalAlpha=p.alpha;
+        ctx.fillStyle="white";
+        ctx.fillRect(p.x,p.y,2,2);
+    });
+    requestAnimationFrame(animateFireworks);
+}
+
+</script>
+
+</body>
+</html>
