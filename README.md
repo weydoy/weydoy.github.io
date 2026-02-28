@@ -1,4 +1,5 @@
-
+[index.html](https://github.com/user-attachments/files/25620912/index.html)
+<!DOCTYPE html>
 <html>
 <head>
 <title>Young Mi's Quarter of a Century</title>
@@ -49,13 +50,6 @@ canvas {
 }
 .balloon { animation: float 3s ease-in-out infinite; }
 
-/* Eye blink */
-@keyframes blink {
-    0%, 90%, 100% { transform: scaleY(1); }
-    95% { transform: scaleY(0.1); }
-}
-.eye { animation: blink 4s infinite; }
-
 /* Mouse nibble */
 @keyframes nibble {
     0%,100% { transform: rotate(0deg); }
@@ -75,6 +69,15 @@ canvas {
     100% { transform: translateY(0); }
 }
 .frog-jump { animation: frogJump 1s ease-out; }
+
+/* Frog blink using eyelids */
+@keyframes eyelidBlink {
+    0%, 90%, 100% { height: 0; }
+    95% { height: 20px; }
+}
+.eyelid {
+    animation: eyelidBlink 4s infinite;
+}
 
 /* Final screen */
 #finalScreen {
@@ -120,36 +123,65 @@ canvas {
 <!-- Frog -->
 <div class="frog-container">
 <svg width="220" height="300" viewBox="0 0 220 300">
+
 <g class="balloon">
 <line x1="150" y1="60" x2="150" y2="160" stroke="#555" stroke-width="2"/>
 <ellipse cx="150" cy="40" rx="35" ry="45" fill="#ff6b81"/>
 <polygon points="145,85 155,85 150,95" fill="#ff6b81"/>
 </g>
+
 <ellipse cx="110" cy="200" rx="70" ry="60" fill="#66bb6a"/>
 <ellipse cx="110" cy="215" rx="40" ry="35" fill="#a5d6a7"/>
 <circle cx="80" cy="130" r="20" fill="#66bb6a"/>
 <circle cx="140" cy="130" r="20" fill="#66bb6a"/>
-<g class="eye">
+
+<!-- Left Eye -->
+<g>
 <circle cx="80" cy="130" r="10" fill="white"/>
 <circle cx="80" cy="130" r="5" fill="black"/>
+<rect class="eyelid" x="70" y="120" width="20" height="0" fill="#66bb6a"/>
 </g>
-<g class="eye">
+
+<!-- Right Eye -->
+<g>
 <circle cx="140" cy="130" r="10" fill="white"/>
 <circle cx="140" cy="130" r="5" fill="black"/>
+<rect class="eyelid" x="130" y="120" width="20" height="0" fill="#66bb6a"/>
 </g>
-<path d="M75 165 Q110 190 145 165" stroke="#2e7d32" stroke-width="4" fill="transparent"/>
+
+<path d="M75 165 Q110 190 145 165"
+stroke="#2e7d32"
+stroke-width="4"
+fill="transparent"/>
+
 </svg>
 </div>
 
 <!-- Mouse -->
 <div class="mouse-container">
 <svg width="220" height="200" viewBox="0 0 220 200">
+
+<!-- Cheese -->
 <polygon points="120,140 190,120 190,170 120,170" fill="#ffd54f"/>
+
+<!-- Body -->
 <ellipse cx="80" cy="150" rx="50" ry="35" fill="#b0bec5"/>
+
+<!-- Tail -->
+<path d="M30 155 Q0 130 25 110 Q50 90 20 70"
+stroke="#90a4ae"
+stroke-width="4"
+fill="transparent"
+stroke-linecap="round"/>
+
+<!-- Head -->
 <g class="mouse-head">
 <ellipse cx="110" cy="140" rx="30" ry="25" fill="#b0bec5"/>
 <circle cx="120" cy="135" r="4" fill="black"/>
+<circle cx="95" cy="120" r="12" fill="#cfd8dc"/>
+<circle cx="115" cy="120" r="12" fill="#cfd8dc"/>
 </g>
+
 </svg>
 </div>
 
@@ -163,42 +195,44 @@ const countdownElement = document.getElementById("countdown");
 const hiddenContent = document.getElementById("hiddenContent");
 
 const timer = setInterval(function() {
-    const now = new Date().getTime();
-    const distance = targetDate - now;
+const now = new Date().getTime();
+const distance = targetDate - now;
 
-    if (distance <= 0) {
-        clearInterval(timer);
-        countdownElement.style.display = "none";
-        hiddenContent.style.display = "block";
-        startFireworks();
+if(distance <= 0){
+clearInterval(timer);
+countdownElement.style.display="none";
+hiddenContent.style.display="block";
+startFireworks();
 
-        setTimeout(() => {
-            document.getElementById("finalScreen").style.opacity = "1";
-            document.getElementById("finalScreen").style.pointerEvents = "auto";
-            startTypewriter();
-            makeFrogJump();
-        }, 6000);
+setTimeout(()=>{
+document.getElementById("finalScreen").style.opacity="1";
+document.getElementById("finalScreen").style.pointerEvents="auto";
+startTypewriter();
+makeFrogJump();
+},6000);
 
-        return;
-    }
-
-    const days = Math.floor(distance / (1000*60*60*24));
-    const hours = Math.floor((distance % (1000*60*60*24))/(1000*60*60));
-    const minutes = Math.floor((distance % (1000*60*60))/(1000*60));
-    const seconds = Math.floor((distance % (1000*60))/1000);
-
-    countdownElement.innerHTML =
-        days+"d "+hours+"h "+minutes+"m "+seconds+"s ";
-},1000);
-
-function makeFrogJump() {
-    const frog = document.querySelector(".frog-container");
-    frog.classList.add("frog-jump");
-    setTimeout(()=> frog.classList.remove("frog-jump"),1000);
+return;
 }
 
-function startTypewriter() {
-const message = `Happy birthday to my precious angel... 
+const days=Math.floor(distance/(1000*60*60*24));
+const hours=Math.floor((distance%(1000*60*60*24))/(1000*60*60));
+const minutes=Math.floor((distance%(1000*60*60))/(1000*60));
+const seconds=Math.floor((distance%(1000*60))/1000);
+
+countdownElement.innerHTML=
+days+"d "+hours+"h "+minutes+"m "+seconds+"s ";
+},1000);
+
+function makeFrogJump(){
+const frog=document.querySelector(".frog-container");
+frog.classList.add("frog-jump");
+setTimeout(()=>frog.classList.remove("frog-jump"),1000);
+}
+
+function startTypewriter(){
+const message=`Happy birthday to my precious angel, my warm sun in the cold bleak winter days.
+
+You're 25! According to some ;_; that makes you a part of the official mid 20's gang...
 
 Cakes and Candles Amy x  
 Don't party too hard.
@@ -206,19 +240,18 @@ Don't party too hard.
 Yours,  
 Weylin`;
 
-const element = document.getElementById("typewriter");
+const element=document.getElementById("typewriter");
 let index=0;
 
 function type(){
 if(index<message.length){
-const currentChar=message.charAt(index);
-element.innerHTML+= currentChar === "\n" ? "<br><br>" : currentChar;
+const char=message.charAt(index);
+element.innerHTML+= char==="\n"?"<br><br>":char;
 index++;
 
 let delay=35;
-
-if(message.substring(index-13,index).includes("Yours,")){ delay=120; }
-if(message.substring(index-7,index).includes("Weylin")){ delay=200; }
+if(message.substring(index-13,index).includes("Yours,")){delay=120;}
+if(message.substring(index-7,index).includes("Weylin")){delay=200;}
 
 setTimeout(type,delay);
 }}
@@ -237,12 +270,11 @@ const x=Math.random()*canvas.width;
 const y=Math.random()*canvas.height/2;
 const color=`hsl(${Math.random()*360},100%,50%)`;
 for(let i=0;i<80;i++){
-particles.push({
-x:x,y:y,
+particles.push({x,y,
 angle:Math.random()*2*Math.PI,
 speed:Math.random()*5+2,
-life:100,color:color
-});}}
+life:100,color});
+}}
 
 function update(){
 ctx.fillStyle="rgba(0,0,0,0.15)";
@@ -255,7 +287,7 @@ ctx.beginPath();
 ctx.arc(p.x,p.y,2,0,Math.PI*2);
 ctx.fillStyle=p.color;
 ctx.fill();
-if(p.life<=0){particles.splice(i,1);}
+if(p.life<=0)particles.splice(i,1);
 });
 requestAnimationFrame(update);
 }
