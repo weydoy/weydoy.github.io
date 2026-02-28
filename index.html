@@ -10,8 +10,7 @@
 body{
     margin:0;
     overflow:hidden;
-    background:black;
-    color:white;
+    background:#87ceeb;
     font-family:sans-serif;
     text-align:center;
 }
@@ -23,9 +22,70 @@ body{
     left:50%;
     transform:translate(-50%,-50%);
     font-size:45px;
+    color:white;
+    text-shadow:2px 2px 4px rgba(0,0,0,0.4);
 }
 
-/* FIREWORK CANVAS */
+/* Frog countdown */
+#frogCountdown{
+    position:fixed;
+    bottom:20px;
+    left:20px;
+    font-size:60px;
+    animation:blink 4s infinite;
+}
+
+/* Balloon */
+#balloon{
+    position:fixed;
+    bottom:95px;
+    left:45px;
+    font-size:50px;
+    animation:float 3s ease-in-out infinite;
+}
+
+@keyframes float{
+    0%{transform:translateY(0);}
+    50%{transform:translateY(-15px);}
+    100%{transform:translateY(0);}
+}
+
+/* Mouse + Cheese */
+#mouse{
+    position:fixed;
+    bottom:20px;
+    right:40px;
+    font-size:45px;
+}
+
+#cheese{
+    position:fixed;
+    bottom:20px;
+    right:90px;
+    font-size:40px;
+}
+
+/* Grey Tail */
+.tail{
+    position:absolute;
+    width:30px;
+    height:30px;
+    border:4px solid grey;
+    border-left:none;
+    border-top:none;
+    border-radius:50%;
+    bottom:10px;
+    right:-20px;
+    transform:rotate(45deg);
+}
+
+/* Blink animation */
+@keyframes blink{
+    0%,95%,100%{opacity:1;}
+    97%{opacity:0;}
+}
+
+/* Fireworks */
 canvas{
     position:fixed;
     top:0;
@@ -62,56 +122,21 @@ canvas{
     max-width:720px;
     margin:0 auto;
 }
-
-/* FROG */
-#frog{
-    position:fixed;
-    bottom:30px;
-    left:50%;
-    transform:translateX(-50%);
-    font-size:50px;
-    opacity:0;
-}
-
-/* MOUSE */
-#mouse{
-    position:fixed;
-    bottom:30px;
-    right:40px;
-    font-size:40px;
-}
-
-.tail{
-    position:absolute;
-    width:30px;
-    height:30px;
-    border:4px solid pink;
-    border-left:none;
-    border-top:none;
-    border-radius:50%;
-    bottom:10px;
-    right:-20px;
-    transform:rotate(45deg);
-}
-
-/* Frog Jump */
-@keyframes jump{
-    0%{transform:translateX(-50%) translateY(0);}
-    50%{transform:translateX(-50%) translateY(-40px);}
-    100%{transform:translateX(-50%) translateY(0);}
-}
-
-/* Frog Blink */
-@keyframes blink{
-    0%,95%,100%{opacity:1;}
-    97%{opacity:0;}
-}
 </style>
 </head>
 
 <body>
 
 <div id="countdown"></div>
+
+<div id="frogCountdown">🐸</div>
+<div id="balloon">🎈</div>
+
+<div id="cheese">🧀</div>
+<div id="mouse">
+    🐭
+    <div class="tail"></div>
+</div>
 
 <canvas id="fireworks"></canvas>
 
@@ -135,18 +160,10 @@ canvas{
     </div>
 </div>
 
-<div id="frog">🐸</div>
-
-<div id="mouse">
-    🐭
-    <div class="tail"></div>
-</div>
-
 <script>
 
 /* 5 SECOND PREVIEW */
 const targetDate = new Date().getTime() + 5000;
-
 const countdownElement = document.getElementById("countdown");
 
 const interval = setInterval(()=>{
@@ -164,16 +181,16 @@ const interval = setInterval(()=>{
     if(distance <= 0){
         clearInterval(interval);
         countdownElement.style.display="none";
+        document.getElementById("frogCountdown").style.display="none";
+        document.getElementById("balloon").style.display="none";
+        document.getElementById("mouse").style.display="none";
+        document.getElementById("cheese").style.display="none";
+
         startFireworks();
 
         setTimeout(()=>{
             document.getElementById("finalScreen").style.opacity="1";
             document.getElementById("finalScreen").style.pointerEvents="auto";
-
-            const frog=document.getElementById("frog");
-            frog.style.opacity="1";
-            frog.style.animation="jump 1s ease infinite, blink 4s infinite";
-
         },6000);
     }
 },1000);
