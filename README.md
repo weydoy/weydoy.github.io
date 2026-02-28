@@ -1,7 +1,4 @@
 [Amy.html](https://github.com/user-attachments/files/25620217/Amy.html)
-<!DOCTYPE html>
-<html>
-<head>
     <title>Young Mi's Quarter of a Century</title>
     <style>
         body {
