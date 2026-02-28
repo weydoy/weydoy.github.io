@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Amy 25</title>
+<title>Young Mi's Quarter of a Century</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
 
@@ -10,9 +10,20 @@
 body{
     margin:0;
     overflow:hidden;
-    background:#87ceeb;
+    background:#0d0d1a;
+    color:white;
     font-family:sans-serif;
     text-align:center;
+}
+
+/* TITLE */
+#title{
+    position:absolute;
+    top:60px;
+    width:100%;
+    font-size:32px;
+    font-weight:bold;
+    letter-spacing:2px;
 }
 
 /* COUNTDOWN */
@@ -21,13 +32,11 @@ body{
     top:50%;
     left:50%;
     transform:translate(-50%,-50%);
-    font-size:45px;
-    color:white;
-    text-shadow:2px 2px 4px rgba(0,0,0,0.4);
+    font-size:48px;
 }
 
-/* Frog countdown */
-#frogCountdown{
+/* Frog */
+#frog{
     position:fixed;
     bottom:20px;
     left:20px;
@@ -51,13 +60,6 @@ body{
 }
 
 /* Mouse + Cheese */
-#mouse{
-    position:fixed;
-    bottom:20px;
-    right:40px;
-    font-size:45px;
-}
-
 #cheese{
     position:fixed;
     bottom:20px;
@@ -65,7 +67,13 @@ body{
     font-size:40px;
 }
 
-/* Grey Tail */
+#mouse{
+    position:fixed;
+    bottom:20px;
+    right:40px;
+    font-size:45px;
+}
+
 .tail{
     position:absolute;
     width:30px;
@@ -79,7 +87,7 @@ body{
     transform:rotate(45deg);
 }
 
-/* Blink animation */
+/* Blink */
 @keyframes blink{
     0%,95%,100%{opacity:1;}
     97%{opacity:0;}
@@ -127,9 +135,11 @@ canvas{
 
 <body>
 
+<div id="title">Young Mi's Quarter of a Century</div>
+
 <div id="countdown"></div>
 
-<div id="frogCountdown">🐸</div>
+<div id="frog">🐸</div>
 <div id="balloon">🎈</div>
 
 <div id="cheese">🧀</div>
@@ -167,7 +177,7 @@ const targetDate = new Date().getTime() + 5000;
 const countdownElement = document.getElementById("countdown");
 
 const interval = setInterval(()=>{
-    const now = new Date().getTime();
+    const now = new Date(Date.UTC(2026, 2, 1, 16, 0, 0)).getTime();
     const distance = targetDate - now;
 
     const days = Math.floor(distance/(1000*60*60*24));
@@ -180,8 +190,9 @@ const interval = setInterval(()=>{
 
     if(distance <= 0){
         clearInterval(interval);
+        document.getElementById("title").style.display="none";
         countdownElement.style.display="none";
-        document.getElementById("frogCountdown").style.display="none";
+        document.getElementById("frog").style.display="none";
         document.getElementById("balloon").style.display="none";
         document.getElementById("mouse").style.display="none";
         document.getElementById("cheese").style.display="none";
@@ -205,12 +216,12 @@ canvas.height = window.innerHeight;
 let particles = [];
 
 function createFirework(){
-    for(let i=0;i<100;i++){
+    for(let i=0;i<120;i++){
         particles.push({
             x:canvas.width/2,
             y:canvas.height/2,
-            vx:(Math.random()-0.5)*8,
-            vy:(Math.random()-0.5)*8,
+            vx:(Math.random()-0.5)*10,
+            vy:(Math.random()-0.5)*10,
             alpha:1
         });
     }
