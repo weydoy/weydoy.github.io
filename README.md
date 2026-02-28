@@ -1,4 +1,4 @@
-[index.html](https://github.com/user-attachments/files/25620837/index.html)
+
 <html>
 <head>
 <title>Young Mi's Quarter of a Century</title>
